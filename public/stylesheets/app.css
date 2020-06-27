@@ -31,7 +31,8 @@ body
 
 .ui.header
 {
-    color: white;
+    color: rgb(255, 255, 255);
+    background-color: rgba(56, 35, 18, 0.2);
     width: 275px;
     margin: 20px auto;
     margin-bottom: 50px;
@@ -39,7 +40,7 @@ body
 
 .landButton.ui.button
 {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(56, 35, 18, 0.5);
     color: white;
 }
 

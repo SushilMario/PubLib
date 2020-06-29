@@ -1,23 +1,27 @@
-var mongoose = require("mongoose");
+         var mongoose = require("mongoose"),
+passportLocalMongoose = require("passport-local-mongoose");
+const passport = require("passport");
 
-var BookSchema = new mongoose.Schema
-    (
-        {
-            username: String,
-            password: String,
-            isAdmin:
-            {
-                type: Boolean,
-                default: false
-            },
-            books:
-            [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Book"
-                }
-            ]
-        }
-    );
+var UserSchema = new mongoose.Schema
+(
+    {
+        username: String,
+        password: String,
+        // isAdmin:
+        // {
+        //     type: Boolean,
+        //     default: false
+        // },
+        // books:
+        // [
+        //     {
+        //         type: mongoose.Schema.Types.ObjectId,
+        //         ref: "Book"
+        //     }
+        // ]
+    }
+);
 
-module.exports = mongoose.model("User", userSchema);
+UserSchema.plugin(passportLocalMongoose);
+
+module.exports = mongoose.model("User", UserSchema);

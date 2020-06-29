@@ -52,7 +52,7 @@ app.get("/",
     }
 )
 
-//New route
+//New 
 
 app.get("/register",
     function(req, res)
@@ -61,12 +61,19 @@ app.get("/register",
     }
 )
 
-//Create route
+//Create 
 
-app.post("/register", 
+app.post("/register",
     function(req, res)
     {
         var newUser = new User({ username: req.body.username });
+
+        //Check if the user is registering as an administrator
+        if(req.body.adminCode !== "" && req.body.adminCode === "1234")
+        {
+            newUser.isAdmin = true;
+        }
+
         User.register(newUser, req.body.password,
             function(err, user) 
             {
@@ -80,12 +87,41 @@ app.post("/register",
                     passport.authenticate("local")(req, res,
                         function() 
                         {
-                            res.send("Welcome to PubLib 3, " + user.username + "!");
+                            res.send("Welcome to PubLib, " + user.username + "!");
                         }
                     )
                 }
             }
         )
+    }
+)
+
+//Login
+
+app.get("/login",
+    function(req, res) 
+    {
+        res.render("user/login");
+    }
+)
+
+app.post("/login", passport.authenticate("local",
+    {
+        successRedirect: "/",
+        failureRedirect: "/login"
+    }
+), function(req, res) 
+   {}
+)
+
+
+
+//Catch all 
+
+app.get("*",
+    function(req, res)
+    {
+        res.send("Error 404, page not found");
     }
 )
 

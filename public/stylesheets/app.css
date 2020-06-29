@@ -4,20 +4,29 @@
     height: 62%;
     padding: 5%;
     /* border: 1px solid white; */
-    border: 1px solid black;
+    border: 1px solid whitesmoke;
+}
+
+h1
+{
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
 }
 
 body
 {
-    /* background-color: rgb(29, 26, 26); */
+    background: #200122;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #6f0000, #200122);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #6f0000, #200122); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     height: 100%;
-    padding-top: 200px;
+    padding-top: 12.5%;
 }
 
-/* .ui.container form .field label
+.ui.container form .field label
 {
     color: white;
-} */
+}
 
 .ui.stackable.fixed.menu
 {
@@ -25,6 +34,22 @@ body
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+.ui.stackable.fixed.menu .item
+{
+    color: white;
+}
+
+.ui.stackable.fixed.menu .header.item
+{
+    max-width: 15%;
+}
+
+.ui.stackable.fixed.menu .item:hover
+{
+    background-color: rgba(255, 255, 255, 1);
+    color: black;
 }
 
 .flex

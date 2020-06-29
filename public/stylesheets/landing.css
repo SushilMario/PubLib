@@ -62,8 +62,18 @@ html,body
 
 .ui.stackable.fixed.menu
 {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(255, 255, 255, 0);
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+.ui.stackable.fixed.menu .item
+{
+    color: white;
+}
+
+.ui.stackable.fixed.menu .item:hover
+{
+    background-color: rgba(255, 255, 255, 0.1);
 }

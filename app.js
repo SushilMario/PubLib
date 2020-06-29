@@ -24,6 +24,24 @@ app.get("/",
     }
 )
 
+//New route
+
+app.get("/register",
+    function(req, res)
+    {
+        res.render("user/new");
+    }
+)
+
+//Create route
+
+app.post("/register",
+    function(req, res)
+    {
+        res.send("We are creating your account....");
+    }
+)
+
 app.listen(3000,
     function() 
     {

@@ -1,0 +1,28 @@
+.ui.container
+{
+    width: 50%;
+    height: 62%;
+    padding: 5%;
+    /* border: 1px solid white; */
+    border: 1px solid black;
+}
+
+body
+{
+    /* background-color: rgb(29, 26, 26); */
+    height: 100%;
+    padding-top: 200px;
+}
+
+/* .ui.container form .field label
+{
+    color: white;
+} */
+
+.ui.stackable.fixed.menu
+{
+    background-color: rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}

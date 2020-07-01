@@ -11,10 +11,21 @@
     <body>
         <div class = "ui stackable fixed menu">
             <a class="header item" href="/">PubLib</a>
-            <div class="right menu">
-                <a href="/register" class="item">Signup</a>
-                <a href="/login" class="item">Login</a>
-            </div>
+            <% if(!currentUser){ %>
+                <div class="right menu">
+                    <a href="/register" class="item">Signup</a>
+                    <a href="/login" class="item">Login</a>
+                </div>
+            <% } else{ %>
+                <div class="right menu">
+                    <div class="ui dropdown item">
+                        Logged in as <%= currentUser.username %> <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a href="/logout" class="item">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
             <div class="hamburger">
                 <span class="hamburger-bun"></span>
                 <span class="hamburger-patty"></span>

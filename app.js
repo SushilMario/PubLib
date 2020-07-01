@@ -45,6 +45,19 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+//Use on all routes
+
+app.use
+(
+    function(req, res, next)
+    {
+        res.locals.currentUser = req.user;
+        next();
+    }
+)
+
+//Home 
+
 app.get("/",
     function(req, res)
     {
@@ -98,12 +111,16 @@ app.post("/register",
 
 //Login
 
+//Form 
+
 app.get("/login",
     function(req, res) 
     {
         res.render("user/login");
     }
 )
+
+//Authenticate
 
 app.post("/login", passport.authenticate("local",
     {
@@ -114,7 +131,15 @@ app.post("/login", passport.authenticate("local",
    {}
 )
 
+//Logout
 
+app.get("/logout",
+    function(req, res)
+    {
+        req.logout();
+        res.redirect("/");
+    }
+)
 
 //Catch all 
 

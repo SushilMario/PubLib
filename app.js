@@ -6,7 +6,11 @@ var    express = require("express"),
  LocalStrategy = require("passport-local");
 
 //Models
-var User = require("./models/user.js") 
+var User = require("./models/user.js"), 
+    Book = require("./models/book.js");
+
+//Routes
+var authRoutes = require("./routes/index.js");
 
 //Mongoose setup
 
@@ -56,95 +60,51 @@ app.use
     }
 )
 
-//Home 
+//The routes
 
-app.get("/",
+app.use(authRoutes);
+
+app.get("/books", isAdmin,
     function(req, res)
     {
-        res.render("landing");
+        res.render("book/adminShow");
     }
 )
 
-//New 
-
-app.get("/register",
-    function(req, res)
+function isAdmin(req, res, next) 
+{
+    if(req.isAuthenticated())
     {
-        res.render("user/new");
-    }
-)
-
-//Create 
-
-app.post("/register",
-    function(req, res)
-    {
-        var newUser = new User({ username: req.body.username });
-
-        //Check if the user is registering as an administrator
-        if(req.body.adminCode !== "" && req.body.adminCode === "1234")
-        {
-            newUser.isAdmin = true;
-        }
-
-        User.register(newUser, req.body.password,
-            function(err, user) 
+        var userId = req.user._id;
+        
+        User.findById(userId,
+            function(err, user)
             {
-                if(err) 
+                if(err)
                 {
                     console.log(err);
-                    res.redirect("/register");
+                    res.redirect("/");
                 }
                 else
                 {
-                    passport.authenticate("local")(req, res,
-                        function() 
-                        {
-                            res.send("Welcome to PubLib, " + user.username + "!");
-                        }
-                    )
+                    if (user.isAdmin) 
+                    {
+                        return next();
+                    }
                 }
-            }
+            }    
         )
     }
-)
-
-//Login
-
-//Form 
-
-app.get("/login",
-    function(req, res) 
+    else
     {
-        res.render("user/login");
-    }
-)
-
-//Authenticate
-
-app.post("/login", passport.authenticate("local",
-    {
-        successRedirect: "/",
-        failureRedirect: "/login"
-    }
-), function(req, res) 
-   {}
-)
-
-//Logout
-
-app.get("/logout",
-    function(req, res)
-    {
-        req.logout();
         res.redirect("/");
     }
-)
+}
 
 //Catch all 
 
 app.get("*",
-    function(req, res)
+    function (req, res) 
     {
         res.send("Error 404, page not found");
     }
@@ -156,3 +116,4 @@ app.listen(3000,
         console.log("App up and running!");    
     }
 )
+

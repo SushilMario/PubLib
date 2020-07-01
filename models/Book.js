@@ -5,8 +5,8 @@ var BookSchema = new mongoose.Schema
         {
             title: String,
             author: String,
-            borrowDate: String,
-            dueDate: String,
+            // borrowDate: String,
+            // dueDate: String,
             borrower:
             {
                 type: mongoose.Schema.Types.ObjectId,

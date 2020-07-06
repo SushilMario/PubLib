@@ -1,0 +1,26 @@
+<%- include("../partials/header"); %>
+
+<div class="flex">
+    <div class="ui container border flex">
+        <div class="ui container flex">
+            <h1>New Entry</h1>
+            <form action="/entries" method="POST" class="ui form">
+                <div class="field">
+                    <label>Title</label>
+                    <input type="text" name="title" placeholder="Title" required>
+                </div>
+                <div class="field">
+                    <label>Author</label>
+                    <input type="text" name="author" placeholder="Author" required>
+                </div>
+                <div class="field">
+                    <label>Borrower username</label>
+                    <input type="text" name="borrowerUserName" placeholder="Usermame" required>
+                </div>
+                <button class="ui inverted button" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include("../partials/footer"); %>

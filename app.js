@@ -7,10 +7,11 @@ var    express = require("express"),
 
 //Models
 var User = require("./models/user.js"), 
-    Book = require("./models/book.js");
+    Entry = require("./models/entry.js");
 
 //Routes
-var authRoutes = require("./routes/index.js");
+var authRoutes = require("./routes/index.js"),
+    entryRoutes = require("./routes/entry.js");
 
 //Mongoose setup
 
@@ -56,6 +57,19 @@ app.use
     function(req, res, next)
     {
         res.locals.currentUser = req.user;
+        Entry.find({},
+            function (err, entries) 
+            {
+                if (err) 
+                {
+                    console.log(err);
+                }
+                else 
+                {
+                    res.locals.entries = entries;
+                }
+            }
+        )
         next();
     }
 )
@@ -63,43 +77,7 @@ app.use
 //The routes
 
 app.use(authRoutes);
-
-app.get("/books", isAdmin,
-    function(req, res)
-    {
-        res.render("book/adminShow");
-    }
-)
-
-function isAdmin(req, res, next) 
-{
-    if(req.isAuthenticated())
-    {
-        var userId = req.user._id;
-        
-        User.findById(userId,
-            function(err, user)
-            {
-                if(err)
-                {
-                    console.log(err);
-                    res.redirect("/");
-                }
-                else
-                {
-                    if (user.isAdmin) 
-                    {
-                        return next();
-                    }
-                }
-            }    
-        )
-    }
-    else
-    {
-        res.redirect("/");
-    }
-}
+app.use("/entries", entryRoutes);
 
 //Catch all 
 

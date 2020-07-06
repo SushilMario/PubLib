@@ -50,7 +50,7 @@ router.post("/register",
                         {
                             if (user.isAdmin) 
                             {
-                                res.redirect("/books");
+                                res.redirect("/entries");
                             }
                             else 
                             {
@@ -85,7 +85,7 @@ router.post("/login", passport.authenticate("local",
    {
        if(req.user && req.user.isAdmin)
        {
-           res.redirect("/books");
+           res.redirect("/entries");
        }
    }
 )

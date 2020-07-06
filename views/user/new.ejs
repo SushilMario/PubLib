@@ -1,29 +1,31 @@
 <%- include("../partials/header"); %>
 
 <div class="flex">
-    <div class="ui container">
-        <h1>Sign Up</h1>
-        <form action="/register" method="POST" class="ui form">
-            <div class="field">
-                <label>Username</label>
-                <input type="text" name="username" placeholder="Your username" required>
-            </div>
-            <div class="field">
-                <label>Password</label>
-                <input type="password" name="password" placeholder="Your password" required>
-            </div>
-            <div class="field">
-                <div class="ui checkbox">
-                    <input type="checkbox" tabindex="0">
-                    <label>I am an administrator</label>
+    <div class="ui container border flex">
+        <div class="ui container flex">
+            <h1>Sign Up</h1>
+            <form action="/register" method="POST" class="ui form">
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Your username" required>
                 </div>
-            </div>
-            <div class="field">
-                <label>Administrator Code</label>
-                <input type="password" name="adminCode" placeholder="Your assigned administrator code">
-            </div>
-            <button class="ui inverted button" type="submit">Submit</button>
-        </form>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" tabindex="0">
+                        <label>I am an administrator</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Administrator Code</label>
+                    <input type="password" name="adminCode" placeholder="Your assigned administrator code">
+                </div>
+                <button class="ui inverted button" type="submit">Submit</button>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -1,0 +1,30 @@
+<%- include("../partials/header"); %>
+
+<div class="flex">
+    <div class="ui container flex border">
+        <a href="/entries/new" class="ui inverted button">New</a>
+        <% if(entries.length > 0){ %>
+            <% entries.forEach(function(entry){ %>
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">
+                        <%= entry.title %>, by <%= entry.author %>
+                    </div>
+                    <div class="description">
+                        Borrowed by <%= entry.borrower.username %>
+                    </div>
+                    <div class="meta">
+                        <span class="date">Borrowed on 20.06.2020</span>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        <% }else{ %>
+            <h2>
+                No entries yet
+            </h2>
+        <% } %>
+    </div>
+</div>
+
+<%- include("../partials/footer"); %>

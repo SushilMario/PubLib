@@ -41,7 +41,6 @@ router.post("/", isAdmin,
                 }
                 else
                 {
-                    console.log(user);
                     if(user)
                     {
                         var newEntry = { title: title, author: author, borrower:{id: user._id, username: user.username}};

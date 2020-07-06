@@ -1,0 +1,68 @@
+.ui.container
+{
+    width: 90%;
+    padding: 1%;
+}
+
+h1
+{
+    text-align: center;
+    color: white;
+    margin-bottom: 10%;
+}
+
+h2
+{
+    text-align: center;
+    color: white;
+}
+
+body
+{
+    background: #200122;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #6f0000, #200122);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #6f0000, #200122); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    height: 100%;
+}
+
+.ui.container form .field label
+{
+    color: white;
+}
+
+.ui.stackable.menu
+{
+    background-color: rgba(0, 0, 0, 0);
+    /* box-sizing: border-box; */
+    margin: 0;
+    padding: 0;
+}
+
+.ui.stackable.menu .item
+{
+    color: white;
+}
+
+.ui.stackable.menu .header.item
+{
+    max-width: 15%;
+}
+
+.ui.stackable.menu .item:hover
+{
+    background-color: rgba(255, 255, 255, 1);
+    color: black;
+}
+
+.flex
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.ui.inverted.button
+{
+    margin-bottom: 2.5%;
+}

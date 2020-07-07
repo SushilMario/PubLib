@@ -46,16 +46,9 @@ router.post("/register",
                 else 
                 {
                     passport.authenticate("local")(req, res,
-                        function () 
+                        function() 
                         {
-                            if (user.isAdmin) 
-                            {
-                                res.redirect("/entries");
-                            }
-                            else 
-                            {
-                                res.send("Welcome to PubLib, " + user.username + "!");
-                            }
+                            res.redirect("/entries");
                         }
                     )
                 }
@@ -79,15 +72,11 @@ router.get("/login",
 
 router.post("/login", passport.authenticate("local",
     {
+        successRedirect: "/entries",
         failureRedirect: "/login"
     }
 ), function (req, res) 
-   {
-       if(req.user && req.user.isAdmin)
-       {
-           res.redirect("/entries");
-       }
-   }
+   {}
 )
 
 //Logout

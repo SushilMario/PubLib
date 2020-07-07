@@ -57,19 +57,6 @@ app.use
     function(req, res, next)
     {
         res.locals.currentUser = req.user;
-        Entry.find({},
-            function (err, entries) 
-            {
-                if (err) 
-                {
-                    console.log(err);
-                }
-                else 
-                {
-                    res.locals.entries = entries;
-                }
-            }
-        )
         next();
     }
 )

@@ -11,14 +11,14 @@ var UserSchema = new mongoose.Schema
         {
             type: Boolean,
             default: false
-        }
-        // books:
-        // [
-        //     {
-        //         type: mongoose.Schema.Types.ObjectId,
-        //         ref: "Book"
-        //     }
-        // ]
+        },
+        entries:
+        [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Entry"
+            }
+        ]
     }
 );
 

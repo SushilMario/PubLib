@@ -7,10 +7,61 @@ var router = express.Router();
 
 //Index 
 
-router.get("/", isAdmin,
+router.get("/", isLoggedIn,
     function (req, res) 
     {
-        res.render("entry/adminShow");
+        var userId = req.user._id;
+
+        User.findById(userId,
+            function(err, user) 
+            {
+                if(err) 
+                {
+                    console.log(err);
+                    res.redirect("/");
+                }
+                else 
+                {
+                    if(user.isAdmin)
+                    {
+                        Entry.find({},
+                            function(err, entries) 
+                            {
+                                if(err) 
+                                {
+                                    console.log(err);
+                                }
+                                else 
+                                {
+                                    res.render("entry/show", { entries: entries });
+                                }
+                            }
+                        )
+                    }
+                    else
+                    {
+                        var entries = [];
+                        if(user.entries)
+                        {
+                            Entry.find().where('_id').in(user.entries).exec((err, entries) => 
+                                {
+                                    if(err)
+                                    {
+                                        console.log(err);
+                                    }
+                                    else
+                                    {
+                                        console.log(entries);
+                                        res.render("entry/show", { entries: entries });
+                                    }
+                                }
+                            );
+                        }
+                    }
+                }
+            }
+        )
+        
     }
 )
 
@@ -54,8 +105,21 @@ router.post("/", isAdmin,
                                 }
                                 else
                                 {
-                                    console.log(entry.borrower);
-                                    res.redirect("/entries");
+                                    user.entries.push(entry);
+                                    User.findByIdAndUpdate(user._id, user,
+                                       function(err, updatedUser)
+                                       {
+                                           if(err)
+                                           {
+                                               console.log(err);
+                                               res.redirect("/entries/new");
+                                           }
+                                           else
+                                           {
+                                               res.redirect("/entries"); 
+                                           }
+                                       } 
+                                    )
                                 }
                             }    
                         )
@@ -73,18 +137,36 @@ router.post("/", isAdmin,
 
 //Middleware
 
-function isAdmin(req, res, next) {
-    if (req.isAuthenticated()) {
+function isLoggedIn(req, res, next) 
+{
+    if (req.isAuthenticated()) 
+    {
+        return next();
+    }
+    else 
+    {
+        res.redirect("/");
+    }
+}
+
+function isAdmin(req, res, next) 
+{
+    if (req.isAuthenticated()) 
+    {
         var userId = req.user._id;
 
         User.findById(userId,
-            function (err, user) {
-                if (err) {
+            function(err, user) 
+            {
+                if(err) 
+                {
                     console.log(err);
                     res.redirect("/");
                 }
-                else {
-                    if (user.isAdmin) {
+                else 
+                {
+                    if(user.isAdmin) 
+                    {
                         return next();
                     }
                 }

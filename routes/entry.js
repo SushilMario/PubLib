@@ -82,6 +82,7 @@ router.post("/", isAdmin,
         var title = req.body.title;
         var author = req.body.author;
         var borrowerUserName = req.body.borrowerUserName;
+        var borrowDate = req.body.borrowDate;
         User.findOne({username: borrowerUserName}, 
             function(err, user)    
             {
@@ -94,7 +95,7 @@ router.post("/", isAdmin,
                 {
                     if(user)
                     {
-                        var newEntry = { title: title, author: author, borrower:{id: user._id, username: user.username}};
+                        var newEntry = { title: title, author: author, borrowDate: borrowDate, borrower:{id: user._id, username: user.username}};
                         Entry.create(newEntry, 
                             function(err, entry)
                             {
@@ -116,6 +117,7 @@ router.post("/", isAdmin,
                                            }
                                            else
                                            {
+                                               console.log(req.body.borrowDate);
                                                res.redirect("/entries"); 
                                            }
                                        } 

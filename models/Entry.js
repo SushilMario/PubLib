@@ -5,8 +5,8 @@ var EntrySchema = new mongoose.Schema
         {
             title: String,
             author: String,
-            // borrowDate: String,
-            // dueDate: String,
+            borrowDate: Date,
+            dueDate: Date,
             borrower:
             {
                 id:

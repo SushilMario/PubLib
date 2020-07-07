@@ -1,8 +1,7 @@
-.ui.container.border
+.border
 {
     width: 50%;
-    height: 62%;
-    padding: 1%;
+    padding: 3%;
     border: 1px solid white;
 }
 

@@ -1,9 +1,11 @@
-var express = require("express");
+var express = require("express"),
+     moment = require("moment");
 
 var User = require("../models/user.js"),
     Entry = require("../models/entry.js");
 
 var router = express.Router();
+    moment().format();
 
 //Index 
 
@@ -74,7 +76,7 @@ router.get("/new", isAdmin,
     }
 )
 
-//Create route
+//Create 
 
 router.post("/", isAdmin,
     function(req, res)
@@ -83,6 +85,8 @@ router.post("/", isAdmin,
         var author = req.body.author;
         var borrowerUserName = req.body.borrowerUserName;
         var borrowDate = req.body.borrowDate;
+        // var momentBorrowDate = moment(borrowDate);
+        var dueDate = moment(borrowDate).add(2, "weeks");
         User.findOne({username: borrowerUserName}, 
             function(err, user)    
             {
@@ -95,7 +99,7 @@ router.post("/", isAdmin,
                 {
                     if(user)
                     {
-                        var newEntry = { title: title, author: author, borrowDate: borrowDate, borrower:{id: user._id, username: user.username}};
+                        var newEntry = { title: title, author: author, borrowDate: borrowDate, dueDate: dueDate, borrower:{id: user._id, username: user.username}};
                         Entry.create(newEntry, 
                             function(err, entry)
                             {
@@ -117,7 +121,6 @@ router.post("/", isAdmin,
                                            }
                                            else
                                            {
-                                               console.log(req.body.borrowDate);
                                                res.redirect("/entries"); 
                                            }
                                        } 
@@ -133,6 +136,27 @@ router.post("/", isAdmin,
                     }
                 }
             }
+        )
+    }
+)
+
+//Destroy
+
+router.delete("/:id", isAdmin, 
+    function(req, res)
+    {
+        Entry.findByIdAndRemove(req.params.id,
+            function(err)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    res.redirect("/entries");
+                }
+            }    
         )
     }
 )

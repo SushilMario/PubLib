@@ -64,5 +64,28 @@ body
 
 .ui.inverted.button
 {
-    margin-bottom: 2.5%;
+    margin-bottom: 5%;
+}
+
+.red
+{
+    color: rgb(122, 4, 4);
+}
+
+.green
+{
+    color: rgb(40, 100, 5);
+}
+
+.return
+{
+    border: 2px solid rgba(114, 25, 3, 0.7);
+    color: rgba(114, 25, 3, 0.7);
+    padding: 1% 2%;
+}
+
+.return:hover
+{
+    border: 2px solid rgba(114, 25, 3, 0.5);
+    color: rgba(114, 25, 3, 1);
 }

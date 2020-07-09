@@ -37,7 +37,7 @@ body
     color: white;
 }
 
-.ui.stackable.menu
+.ui.stackable.fixed.menu
 {
     background-color: rgba(0, 0, 0, 0);
     /* box-sizing: border-box; */
@@ -45,17 +45,17 @@ body
     padding: 0;
 }
 
-.ui.stackable.menu .item
+.ui.stackable.fixed.menu .item
 {
     color: white;
 }
 
-.ui.stackable.menu .header.item
+.ui.stackable.fixed.menu .header.item
 {
     max-width: 15%;
 }
 
-.ui.stackable.menu .item:hover
+.ui.stackable.fixed.menu .item:hover
 {
     background-color: rgba(255, 255, 255, 1);
     color: black;

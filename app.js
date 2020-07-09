@@ -4,11 +4,11 @@ var    express = require("express"),
       mongoose = require("mongoose"),
 methodOverride = require("method-override"),
       passport = require("passport"),
+         flash = require("connect-flash"),
  LocalStrategy = require("passport-local");
 
 //Models
-var User = require("./models/User.js"), 
-    Entry = require("./models/Entry.js");
+var User = require("./models/User.js");
 
 //Routes
 var authRoutes = require("./routes/index.js"),
@@ -20,8 +20,8 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-// mongoose.connect("mongodb://localhost/pub-lib");
-mongoose.connect("mongodb+srv://sms2001:chemlab@cluster0.9ncvf.mongodb.net/publib?retryWrites=true&w=majority");
+mongoose.connect("mongodb://localhost/pub-lib");
+// mongoose.connect("mongodb+srv://sms2001:chemlab@cluster0.9ncvf.mongodb.net/publib?retryWrites=true&w=majority");
 
 //App setup
 
@@ -30,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 //Passport configuration
 
@@ -60,6 +61,8 @@ app.use
     function(req, res, next)
     {
         res.locals.currentUser = req.user;
+        res.locals.error = req.flash("error");
+        res.locals.success = req.flash("success");
         next();
     }
 )

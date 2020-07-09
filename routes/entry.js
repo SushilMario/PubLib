@@ -4,12 +4,15 @@ var express = require("express"),
 var User = require("../models/User.js"),
     Entry = require("../models/Entry.js");
 
+var middleware = require("../middleware");
+
 var router = express.Router();
+
     moment().format();
 
 //Index 
 
-router.get("/", isLoggedIn, getOverdue,
+router.get("/", middleware.isLoggedIn, middleware.getOverdue,
     function (req, res) 
     {
         var userId = req.user._id;
@@ -35,6 +38,7 @@ router.get("/", isLoggedIn, getOverdue,
                                 }
                                 else 
                                 {
+                                    // middleware.generateCode();
                                     res.render("entry/index", { entries: entries });
                                 }
                             }
@@ -66,7 +70,7 @@ router.get("/", isLoggedIn, getOverdue,
 
 //New
 
-router.get("/new", isAdmin,
+router.get("/new", middleware.isAdmin,
     function(req, res)
     {
         res.render("entry/new");
@@ -75,7 +79,7 @@ router.get("/new", isAdmin,
 
 //Create 
 
-router.post("/", isAdmin,
+router.post("/", middleware.isAdmin,
     function(req, res)
     {
         var title = req.body.title;
@@ -117,6 +121,7 @@ router.post("/", isAdmin,
                                            }
                                            else
                                            {
+                                               req.flash("success", "Entry successfully added!");
                                                res.redirect("/entries"); 
                                            }
                                        } 
@@ -138,7 +143,7 @@ router.post("/", isAdmin,
 
 //Edit
 
-router.get("/:id/edit", isAdmin,
+router.get("/:id/edit", middleware.isAdmin,
     function(req, res)
     {
         Entry.findById(req.params.id,
@@ -159,7 +164,7 @@ router.get("/:id/edit", isAdmin,
 
 //Update
 
-router.put("/:id",
+router.put("/:id", middleware.isAdmin,
     function(req, res)
     {
         Entry.findById(req.params.id,
@@ -183,6 +188,7 @@ router.put("/:id",
                             }
                             else
                             {
+                                req.flash("success", "Entry successfully updated!");
                                 res.redirect("/entries");
                             }
                         }
@@ -195,7 +201,7 @@ router.put("/:id",
 
 //Destroy
 
-router.delete("/:id", isAdmin, 
+router.delete("/:id", middleware.isAdmin, 
     function(req, res)
     {
         Entry.findByIdAndRemove(req.params.id,
@@ -207,98 +213,12 @@ router.delete("/:id", isAdmin,
                 }
                 else
                 {
+                    req.flash("success", "Entry successfully deleted!");
                     res.redirect("/entries");
                 }
             }    
         )
     }
 )
-
-//Get overdue
-
-function getOverdue(req, res, next) 
-{
-    Entry.find({},
-        function (err, entries) 
-        {
-            if (err) 
-            {
-                console.log(err);
-                res.redirect("/");
-            }
-            else 
-            {
-                entries.forEach
-                (
-                    function (entry) 
-                    {
-                        if (moment().isAfter(entry.dueDate, "day")) 
-                        {
-                            entry.daysOverdue = moment().diff(entry.dueDate, "day");
-                            Entry.findByIdAndUpdate(entry._id, entry,
-                                function (err, updatedEntry) 
-                                {
-                                    if (err) 
-                                    {
-                                        console.log(err);
-                                        res.redirect("/");
-                                    }
-                                }
-                            )
-                        }
-                    }
-                )
-            }
-            return next();
-        }
-    )
-}
-
-//Middleware
-
-function isLoggedIn(req, res, next) 
-{
-    if (req.isAuthenticated()) 
-    {
-        return next();
-    }
-    else 
-    {
-        res.redirect("/");
-    }
-}
-
-function isAdmin(req, res, next) 
-{
-    if (req.isAuthenticated()) 
-    {
-        var userId = req.user._id;
-
-        User.findById(userId,
-            function(err, user) 
-            {
-                if(err) 
-                {
-                    console.log(err);
-                    res.redirect("/");
-                }
-                else 
-                {
-                    if(user.isAdmin) 
-                    {
-                        return next();
-                    }
-                    else
-                    {
-                        res.redirect("back");
-                    }
-                }
-            }
-        )
-    }
-    else {
-        res.redirect("/");
-    }
-}
 
 module.exports = router;

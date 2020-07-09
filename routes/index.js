@@ -30,7 +30,7 @@ router.post("/register",
         var newUser = new User({ username: req.body.username });
 
         //Check if the user is registering as an administrator
-        if (req.body.adminCode !== "" && req.body.adminCode === "1234") 
+        if (req.body.adminCode !== "" && req.body.adminCode === "6918899") 
         {
             newUser.isAdmin = true;
         }
@@ -48,6 +48,7 @@ router.post("/register",
                     passport.authenticate("local")(req, res,
                         function() 
                         {
+                            req.flash("success", "Welcome to Publib, " + user.username + "!");
                             res.redirect("/entries");
                         }
                     )

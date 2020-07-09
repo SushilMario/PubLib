@@ -78,10 +78,13 @@ app.get("*",
     }
 )
 
-app.listen(3000,
-    function() 
+//Setting up the listening port
+
+var port = process.env.PORT || 3000;
+app.listen(port, 
+    function () 
     {
-        console.log("App up and running!");    
+        console.log("Server Has Started!");
     }
-)
+);
 

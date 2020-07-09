@@ -7,6 +7,11 @@ var EntrySchema = new mongoose.Schema
             author: String,
             borrowDate: Date,
             dueDate: Date,
+            daysOverdue: 
+            {
+                type: Number,
+                default: 0
+            },
             borrower:
             {
                 id:

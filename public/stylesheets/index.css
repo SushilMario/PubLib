@@ -72,16 +72,27 @@ body
     color: rgb(122, 4, 4);
 }
 
-.green
+.edit
 {
-    color: rgb(40, 100, 5);
+    border: 2px solid rgba(228, 114, 22, 0.7);
+    color: rgba(211, 120, 97, 0.7);
+    padding: 1.75% 2.5%;
+    margin-right: 2%;
+    background-color: white;
+}
+
+.edit:hover
+{
+    border: 2px solid rgba(228, 114, 22, 0.5);
+    color: rgba(211, 120, 97, 1);
 }
 
 .return
 {
     border: 2px solid rgba(114, 25, 3, 0.7);
     color: rgba(114, 25, 3, 0.7);
-    padding: 1% 2%;
+    padding: 1.75% 2.5%;
+    background-color: white;
 }
 
 .return:hover

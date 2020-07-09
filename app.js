@@ -20,7 +20,8 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect("mongodb://localhost/pub-lib");
+// mongoose.connect("mongodb://localhost/pub-lib");
+mongoose.connect("mongodb+srv://sms2001:chemlab@cluster0.9ncvf.mongodb.net/pub-lib?retryWrites=true&w=majority");
 
 //App setup
 

@@ -3,6 +3,7 @@ var express = require("express"),
 
 var User = require("../models/user.js"),
     Entry = require("../models/entry.js");
+const entry = require("../models/entry.js");
 
 var router = express.Router();
     moment().format();
@@ -13,6 +14,7 @@ router.get("/", isLoggedIn,
     function (req, res) 
     {
         var userId = req.user._id;
+        getOverdue();
 
         User.findById(userId,
             function(err, user) 
@@ -35,14 +37,13 @@ router.get("/", isLoggedIn,
                                 }
                                 else 
                                 {
-                                    res.render("entry/show", { entries: entries });
+                                    res.render("entry/index", { entries: entries });
                                 }
                             }
                         )
                     }
                     else
                     {
-                        var entries = [];
                         if(user.entries)
                         {
                             Entry.find().where('_id').in(user.entries).exec((err, entries) => 
@@ -53,8 +54,7 @@ router.get("/", isLoggedIn,
                                     }
                                     else
                                     {
-                                        console.log(entries);
-                                        res.render("entry/show", { entries: entries });
+                                        res.render("entry/index", { entries: entries });
                                     }
                                 }
                             );
@@ -63,7 +63,6 @@ router.get("/", isLoggedIn,
                 }
             }
         )
-        
     }
 )
 
@@ -85,7 +84,6 @@ router.post("/", isAdmin,
         var author = req.body.author;
         var borrowerUserName = req.body.borrowerUserName;
         var borrowDate = req.body.borrowDate;
-        // var momentBorrowDate = moment(borrowDate);
         var dueDate = moment(borrowDate).add(2, "weeks");
         User.findOne({username: borrowerUserName}, 
             function(err, user)    
@@ -140,6 +138,63 @@ router.post("/", isAdmin,
     }
 )
 
+//Edit
+
+router.get("/:id/edit", isAdmin,
+    function(req, res)
+    {
+        Entry.findById(req.params.id,
+            function(err, foundEntry)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    res.render("entry/edit", {entry: foundEntry});
+                }
+            }
+        )
+    }
+)
+
+//Update
+
+router.put("/:id",
+    function(req, res)
+    {
+        Entry.findById(req.params.id,
+            function(err, foundEntry)
+            {
+                if(err)
+                {
+                    console.log(err);
+                    res.redirect("/entries/" + req.params.id + "/edit");
+                }
+                else
+                {
+                    foundEntry.dueDate = req.body.dueDate;
+                    Entry.findByIdAndUpdate(req.params.id, foundEntry,
+                        function(err, updatedEntry)
+                        {
+                            if(err)
+                            {
+                                console.log(err);
+                                res.redirect("/entries/" + req.params.id + "/edit");
+                            }
+                            else
+                            {
+                                res.redirect("/entries");
+                            }
+                        }
+                    )
+                }
+            }    
+        )
+    }
+)
+
 //Destroy
 
 router.delete("/:id", isAdmin, 
@@ -160,6 +215,41 @@ router.delete("/:id", isAdmin,
         )
     }
 )
+
+//Get overdue
+
+function getOverdue() 
+{
+    Entry.find({},
+        function (err, entries) 
+        {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                entries.forEach
+                    (
+                        function (entry) 
+                        {
+                            if (moment().isAfter(entry.dueDate, "day")) 
+                            {
+                                entry.daysOverdue = moment().diff(entry.dueDate, "day");
+                                Entry.findByIdAndUpdate(entry._id, entry,
+                                    function (err, updatedEntry) 
+                                    {
+                                        if (err) 
+                                        {
+                                            console.log(err);
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    )
+            }
+        }
+    )
+}
 
 //Middleware
 

@@ -40,7 +40,7 @@ router.post("/register",
             {
                 if (err) 
                 {
-                    console.log(err);
+                    req.flash("error", "A user with the given username already exists");
                     res.redirect("/register");
                 }
                 else 
@@ -86,6 +86,7 @@ router.get("/logout",
     function (req, res) 
     {
         req.logout();
+        req.flash("success", "Successfully logged you out!");
         res.redirect("/");
     }
 )

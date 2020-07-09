@@ -132,7 +132,7 @@ router.post("/", middleware.isAdmin,
                     }
                     else
                     {
-                        console.log("User not found");
+                        req.flash("error", "Error! User does not exist");
                         res.redirect("/entries/new");
                     }
                 }

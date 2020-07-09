@@ -1,9 +1,8 @@
 var express = require("express"),
      moment = require("moment");
 
-var User = require("../models/user.js"),
-    Entry = require("../models/entry.js");
-const entry = require("../models/entry.js");
+var User = require("../models/User.js"),
+    Entry = require("../models/Entry.js");
 
 var router = express.Router();
     moment().format();

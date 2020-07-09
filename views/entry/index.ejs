@@ -13,7 +13,7 @@
                         <div class="content">
                             <% if(currentUser.isAdmin > 0){ %>
                                 <form class="delete" action="/entries/<%= entry._id %>?_method=DELETE" method="POST">
-                                    <a type="submit" class="return right floated submitButton"><i class="fas fa-check"></i></a>
+                                    <a class="return right floated submitButton"><i class="fas fa-check"></i></a>
                                 </form>
                                 <a class="edit right floated" href="/entries/<%= entry._id %>/edit"><i class="fas fa-edit"></i></a>
                             <% } %>

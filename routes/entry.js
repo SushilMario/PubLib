@@ -216,35 +216,40 @@ router.delete("/:id", isAdmin,
 
 //Get overdue
 
-function getOverdue() 
+function getOverdue(req, res, next) 
 {
     Entry.find({},
         function (err, entries) 
         {
-            if (err) {
+            if (err) 
+            {
                 console.log(err);
+                res.redirect("/");
             }
-            else {
+            else 
+            {
                 entries.forEach
-                    (
-                        function (entry) 
+                (
+                    function (entry) 
+                    {
+                        if (moment().isAfter(entry.dueDate, "day")) 
                         {
-                            if (moment().isAfter(entry.dueDate, "day")) 
-                            {
-                                entry.daysOverdue = moment().diff(entry.dueDate, "day");
-                                Entry.findByIdAndUpdate(entry._id, entry,
-                                    function (err, updatedEntry) 
+                            entry.daysOverdue = moment().diff(entry.dueDate, "day");
+                            Entry.findByIdAndUpdate(entry._id, entry,
+                                function (err, updatedEntry) 
+                                {
+                                    if (err) 
                                     {
-                                        if (err) 
-                                        {
-                                            console.log(err);
-                                        }
+                                        console.log(err);
+                                        res.redirect("/");
                                     }
-                                )
-                            }
+                                }
+                            )
                         }
-                    )
+                    }
+                )
             }
+            return next();
         }
     )
 }

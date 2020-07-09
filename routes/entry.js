@@ -9,11 +9,10 @@ var router = express.Router();
 
 //Index 
 
-router.get("/", isLoggedIn,
+router.get("/", isLoggedIn, getOverdue,
     function (req, res) 
     {
         var userId = req.user._id;
-        getOverdue();
 
         User.findById(userId,
             function(err, user) 

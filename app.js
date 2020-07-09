@@ -7,8 +7,8 @@ methodOverride = require("method-override"),
  LocalStrategy = require("passport-local");
 
 //Models
-var User = require("./models/user.js"), 
-    Entry = require("./models/entry.js");
+var User = require("./models/User.js"), 
+    Entry = require("./models/Entry.js");
 
 //Routes
 var authRoutes = require("./routes/index.js"),

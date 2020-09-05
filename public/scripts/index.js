@@ -1,9 +1,6 @@
 var submitButtons = document.querySelectorAll(".submitButton");
 var deleteForms = document.querySelectorAll(".delete");
 
-console.log(submitButtons);
-console.log(deleteForms);
-
 for (let index = 0; index < submitButtons.length; index++) 
 {
     submitButtons[index].onclick = function ()
@@ -12,3 +9,4 @@ for (let index = 0; index < submitButtons.length; index++)
         deleteForms[index].submit();
     }
 }
+

@@ -4,6 +4,15 @@
     <% if(currentUser.isAdmin){ %>
         <a href="/entries/new" class="ui inverted button">New</a>
     <% } %>
+    <div class="ui selection dropdown">
+        <input type="hidden" name="sorter">
+        <i class="dropdown icon"></i>
+        <div class="default text">Sort by <%= sorter %></div>
+        <div class="menu">
+            <a class="item" href="/entries/title">Title</a>
+            <a class="item" href="/entries/daysOverdue">Days overdue</a>
+        </div>
+    </div>
     
     <% if(entries.length > 0){ %>
         <div class="ui stackable grid">

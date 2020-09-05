@@ -8,65 +8,7 @@ var middleware = require("../middleware");
 
 var router = express.Router();
 
-    moment().format();
-
-//Index 
-
-router.get("/", middleware.isLoggedIn, middleware.getOverdue,
-    function (req, res) 
-    {
-        var userId = req.user._id;
-
-        User.findById(userId,
-            function(err, user) 
-            {
-                if(err) 
-                {
-                    console.log(err);
-                    res.redirect("/");
-                }
-                else 
-                {
-                    if(user.isAdmin)
-                    {
-                        Entry.find({},
-                            function(err, entries) 
-                            {
-                                if(err) 
-                                {
-                                    console.log(err);
-                                }
-                                else 
-                                {
-                                    // middleware.generateCode();
-                                    res.render("entry/index", { entries: entries });
-                                }
-                            }
-                        )
-                    }
-                    else
-                    {
-                        if(user.entries)
-                        {
-                            Entry.find().where('_id').in(user.entries).exec((err, entries) => 
-                                {
-                                    if(err)
-                                    {
-                                        console.log(err);
-                                    }
-                                    else
-                                    {
-                                        res.render("entry/index", { entries: entries });
-                                    }
-                                }
-                            );
-                        }
-                    }
-                }
-            }
-        )
-    }
-)
+moment().format();
 
 //New
 
@@ -122,7 +64,7 @@ router.post("/", middleware.isAdmin,
                                            else
                                            {
                                                req.flash("success", "Entry successfully added!");
-                                               res.redirect("/entries"); 
+                                               res.redirect("/entries/none"); 
                                            }
                                        } 
                                     )
@@ -217,6 +159,65 @@ router.delete("/:id", middleware.isAdmin,
                     res.redirect("/entries");
                 }
             }    
+        )
+    }
+)
+
+//Index 
+
+router.get("/:sorter", middleware.isLoggedIn, middleware.getOverdue,
+    function (req, res) 
+    {
+        var userId = req.user._id;
+        let sorter = req.params.sorter;
+
+        User.findById(userId,
+            function(err, user) 
+            {
+                if(err) 
+                {
+                    console.log(err);
+                    res.redirect("/");
+                }
+                else 
+                {
+                    if(user.isAdmin)
+                    {
+                        Entry.find({},
+                            function(err, entries) 
+                            {
+                                if(err) 
+                                {
+                                    console.log(err);
+                                }
+                                else 
+                                {
+                                    // middleware.generateCode();
+                                    res.render("entry/index", { entries: entries, sorter: sorter });
+                                }
+                            }
+                        )
+                    }
+                    else
+                    {
+                        if(user.entries)
+                        {
+                            Entry.find().where('_id').in(user.entries).exec((err, entries) => 
+                                {
+                                    if(err)
+                                    {
+                                        console.log(err);
+                                    }
+                                    else
+                                    {
+                                        res.render("entry/index", { entries: entries });
+                                    }
+                                }
+                            );
+                        }
+                    }
+                }
+            }
         )
     }
 )

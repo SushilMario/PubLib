@@ -49,7 +49,7 @@ router.post("/register",
                         function() 
                         {
                             req.flash("success", "Welcome to Publib, " + user.username + "!");
-                            res.redirect("/entries");
+                            res.redirect("/entries/none");
                         }
                     )
                 }
@@ -73,7 +73,7 @@ router.get("/login",
 
 router.post("/login", passport.authenticate("local",
     {
-        successRedirect: "/entries",
+        successRedirect: "/entries/none",
         failureRedirect: "/login"
     }
 ), function (req, res) 

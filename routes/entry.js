@@ -146,8 +146,9 @@ router.put("/:id", middleware.isAdmin,
 router.delete("/:id", middleware.isAdmin, 
     function(req, res)
     {
-        Entry.findByIdAndRemove(req.params.id,
-            function(err)
+        const userId = req.user._id;
+        Entry.findById(req.params.id,
+            function(err, entry)
             {
                 if(err)
                 {
@@ -155,15 +156,128 @@ router.delete("/:id", middleware.isAdmin,
                 }
                 else
                 {
-                    req.flash("success", "Entry successfully deleted!");
-                    res.redirect("/entries");
+                    entry.isDue = false;
+                    entry.returnDate = moment();
+                    Entry.findByIdAndUpdate(req.params.id, entry,
+                        function(err, updatedEntry)
+                        {
+                            if(err)
+                            {
+                                console.log(err);
+                            }
+                            else
+                            {
+                                req.flash("success", "Book successfully returned!");
+                                User.findById(userId,
+                                    function(err, user)
+                                    {
+                                        if(err)
+                                        {
+                                            console.log(err);
+                                        }
+                                        else
+                                        {
+                                            user.previousBorrows.push(entry);
+                                            User.findByIdAndUpdate(user._id, user,
+                                                function(err, updatedUser)
+                                                {
+                                                    if(err)
+                                                    {
+                                                        console.log(err);
+                                                    }
+                                                } 
+                                            )
+                                        }
+                                    }
+                                );
+                            }
+                        }    
+                    )
+                    res.redirect("/entries/none");
                 }
             }    
         )
     }
 )
 
-//Index 
+//Previous - index
+
+router.get("/previous", middleware.isLoggedIn, 
+    function (req, res) 
+    {
+        var userId = req.user._id;
+
+        User.findById(userId,
+            function(err, user) 
+            {
+                if(err) 
+                {
+                    console.log(err);
+                    res.redirect("/");
+                }
+                else 
+                {
+                    if(user.previousBorrows)
+                    {
+                        Entry.find().where('_id').in(user.previousBorrows).exec((err, entries) => 
+                            {
+                                if(err)
+                                {
+                                    console.log(err);
+                                }
+                                else
+                                {
+                                    res.render("entry/previous", { entries: entries });
+                                }
+                            }
+                        );
+                    }
+                }
+            }
+        );
+    }
+)
+
+//Search
+
+router.get("/search/:query", middleware.isLoggedIn,
+    function(req, res)
+    {
+        let queryWords = req.params.query.split(" ");
+        var userId = req.user._id;
+
+        User.findById(userId,
+            function(err, user) 
+            {
+                if(err) 
+                {
+                    console.log(err);
+                    res.redirect("/");
+                }
+                else 
+                {
+                    if(user.entries)
+                    {
+                        Entry.find().where('_id').in(user.entries).exec((err, entries) => 
+                            {
+                                if(err)
+                                {
+                                    console.log(err);
+                                }
+                                else
+                                {
+                                    middleware.search(entries, queryWords);
+                                }
+                            }
+                        );
+                    }
+                }
+            }
+        )
+    }
+)
+
+//Index
 
 router.get("/:sorter", middleware.isLoggedIn, middleware.getOverdue,
     function (req, res) 
@@ -193,7 +307,16 @@ router.get("/:sorter", middleware.isLoggedIn, middleware.getOverdue,
                                 else 
                                 {
                                     // middleware.generateCode();
-                                    res.render("entry/index", { entries: entries, sorter: sorter });
+                                    if(sorter === "title")
+                                    {
+                                        entries.sort(middleware.compareValues("title"));
+                                    }
+
+                                    if(sorter === "daysOverdue")
+                                    {
+                                        entries.sort(middleware.compareValues("daysOverdue"));
+                                    }
+                                    res.render("entry/index", { entries: entries, sorter: sorter});
                                 }
                             }
                         )

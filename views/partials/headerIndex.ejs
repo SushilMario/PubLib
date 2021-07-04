@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
         <link rel="stylesheet" href="/stylesheets/hamburger.css">
         <link rel="stylesheet" href="/stylesheets/index.css">
-        <script src="scripts/sort.js"></script>
         <title>PubLib</title>
     </head>
 
@@ -17,6 +16,7 @@
             <a class="header item" href="/">PubLib</a>
             <% if(!currentUser){ %>
             <div class="right menu">
+                <input type="text" name = "searchQuery" placeholder = "search">
                 <a href="/register" class="item">Signup</a>
                 <a href="/login" class="item">Login</a>
             </div>

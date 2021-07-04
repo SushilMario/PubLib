@@ -1,0 +1,31 @@
+<%- include("../partials/headerIndex"); %>
+
+<div class="ui container flex">
+    <% if(entries.length > 0){ %>
+        <div class="ui stackable grid">
+            <% entries.forEach(function(entry){ %>
+                <div class="ui eight wide tablet four wide computer column">
+                    <div class="ui card">
+                        <div class="content">
+                            <div class="header">
+                                <%= entry.title %>, by <%= entry.author %>
+                            </div>
+                            <div class="meta">
+                                <div class="date">Borrowed on <%= entry.borrowDate.toLocaleDateString() %></div>
+                                <div class="date">Returned on <%= entry.returnDate.toLocaleDateString() %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% }else{ %>
+        <h2>
+            No entries yet
+        </h2>
+    <% } %>
+</div>
+
+<script src="/scripts/index.js"></script>
+
+<%- include("../partials/footer"); %>

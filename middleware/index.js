@@ -47,8 +47,6 @@ middleware.getOverdue = function(req, res, next) {
     )
 }
 
-//Middleware
-
 middleware.isLoggedIn = function(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
@@ -85,6 +83,66 @@ middleware.isAdmin = function(req, res, next)
     else {
         res.redirect("/");
     }
+}
+
+middleware.compareValues = function(key, order = 'asc') 
+{
+    return function innerSort(a, b) 
+    {
+        const varA = (typeof a[key] === 'string')
+        ? a[key].toUpperCase() : a[key];
+        const varB = (typeof b[key] === 'string')
+        ? b[key].toUpperCase() : b[key];
+
+        let comparison = 0;
+        if (varA > varB)
+        {
+            comparison = 1;
+        } 
+        else if (varA < varB) 
+        {
+            comparison = -1;
+        }
+        return (
+            (order === 'desc') ? (comparison * -1) : comparison
+        );
+    };
+}
+
+middleware.search = function(entries, queryWords)
+{
+    let titleWords = [], authorNames = [];
+    const results = [];
+    let hits = 0;
+
+    for(let entry in entries)
+    {
+        titleWords = entry.title.split(" ");
+        authorNames = entry.author.split(" ");
+        for(let queryWord of queryWords)
+        {
+            for(let titleWord of titleWords)
+            {
+                if(queryWord === titleWord)
+                {
+                    hits += 2;
+                }
+            }
+            for(let authorName of authorNames)
+            {
+                if(queryWord === authorName)
+                {
+                    hits += 1;
+                }
+            }
+        }
+        if(hits > 0)
+        {
+            results.push(entry);
+        }
+        hits = 0;
+    }
+    return results;
 }
 
 module.exports = middleware;

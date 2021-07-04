@@ -7,6 +7,7 @@ var EntrySchema = new mongoose.Schema
             author: String,
             borrowDate: Date,
             dueDate: Date,
+            returnDate: Date,
             daysOverdue: 
             {
                 type: Number,
@@ -20,6 +21,11 @@ var EntrySchema = new mongoose.Schema
                     ref: "User"
                 },
                 username: String
+            },
+            isDue: 
+            {
+                type: Boolean,
+                default: true
             }
         }
     );

@@ -4,6 +4,7 @@
     <% if(currentUser.isAdmin){ %>
         <a href="/entries/new" class="ui inverted button">New</a>
     <% } %>
+    <a class="ui inverted button" href="/entries/previous">Previous</a>
     <div class="ui selection dropdown">
         <input type="hidden" name="sorter">
         <i class="dropdown icon"></i>
@@ -17,33 +18,35 @@
     <% if(entries.length > 0){ %>
         <div class="ui stackable grid">
             <% entries.forEach(function(entry){ %>
-                <div class="ui eight wide tablet four wide computer column">
-                    <div class="ui card">
-                        <div class="content">
-                            <% if(currentUser.isAdmin > 0){ %>
-                                <form class="delete" action="/entries/<%= entry._id %>?_method=DELETE" method="POST">
-                                    <a class="return right floated submitButton"><i class="fas fa-check"></i></a>
-                                </form>
-                                <a class="edit right floated" href="/entries/<%= entry._id %>/edit"><i class="fas fa-edit"></i></a>
-                            <% } %>
-                            <div class="header">
-                                <%= entry.title %>, by <%= entry.author %>
-                            </div>
-                            <div class="description">
-                                Borrowed by <%= entry.borrower.username %>
-                            </div>
-                            <div class="meta">
-                                <div class="date">Borrowed on <%= entry.borrowDate.toLocaleDateString() %></div>
-                                <div>
-                                    <span class="date">Due on <%= entry.dueDate.toLocaleDateString() %></span>
-                                    <% if(entry.daysOverdue > 0){ %>
-                                        <span class="date red right floated">Days overdue: <%= entry.daysOverdue %></span>
-                                    <% } %>
+                <% if(entry.isDue) { %>
+                    <div class="ui eight wide tablet four wide computer column">
+                        <div class="ui card">
+                            <div class="content">
+                                <% if(currentUser.isAdmin > 0){ %>
+                                    <form class="delete" action="/entries/<%= entry._id %>?_method=DELETE" method="POST">
+                                        <a class="return right floated submitButton"><i class="fas fa-check"></i></a>
+                                    </form>
+                                    <a class="edit right floated" href="/entries/<%= entry._id %>/edit"><i class="fas fa-edit"></i></a>
+                                <% } %>
+                                <div class="header">
+                                    <%= entry.title %>, by <%= entry.author %>
+                                </div>
+                                <div class="description">
+                                    Borrowed by <%= entry.borrower.username %>
+                                </div>
+                                <div class="meta">
+                                    <div class="date">Borrowed on <%= entry.borrowDate.toLocaleDateString() %></div>
+                                    <div>
+                                        <span class="date">Due on <%= entry.dueDate.toLocaleDateString() %></span>
+                                        <% if(entry.daysOverdue > 0){ %>
+                                            <span class="date red right floated">Days overdue: <%= entry.daysOverdue %></span>
+                                        <% } %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <% } %>
             <% }) %>
         </div>
     <% }else{ %>
